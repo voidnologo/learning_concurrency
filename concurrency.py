@@ -26,7 +26,7 @@ class Scheduler:
     def run_to_completion(self):
         while len(self.runnable_tasks) != 0:
             task = self.runnable_tasks.popleft()
-            print(f'Running task {task.id} ...', end='')
+            # print(f'Running task {task.id} ...', end='')
             try:
                 yielded = next(task.routine)
             except StopIteration as stopped:
@@ -37,5 +37,5 @@ class Scheduler:
                 self.failed_task_errors[task.id] = e
             else:
                 assert yielded is None
-                print('now yielded')
+                # print('now yielded')
                 self.runnable_tasks.append(task)

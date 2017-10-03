@@ -31,8 +31,17 @@ def async_print_matches(iterable, async_predicate):
 
 def async_repetitive_message(message, interval_seconds):
     while True:
-        print(message, end='')
+        print(message)
         yield from async_sleep(interval_seconds)
+
+
+def lucas():
+    a = 2
+    b = 1
+    yield a
+    while True:
+        yield b
+        a, b = b, a + b
 
 
 def fib():
@@ -43,9 +52,8 @@ def fib():
         a, b = b, a + b
 
 
-def async_search(iterable, predicate):
+def async_search(iterable, async_predicate):
     for item in iterable:
-        if predicate(item):
+        if (yield from async_predicate(item)):
             return item
-        yield from async_sleep(0)
     raise ValueError('Not Found')
