@@ -1,38 +1,36 @@
+import asyncio
 from math import sqrt
 import time
 
 
-def async_sleep(interval_seconds):
-    start = time.time()
-    expire = start + interval_seconds
-    while True:
-        yield
-        now = time.time()
-        if now >= expire:
-            break
-
-
-def async_is_prime(x):
+async def is_prime(x):
     if x < 2:
         return False
     for i in range(2, int(sqrt(x)) + 1):
         if x % i == 0:
             return False
-        yield from async_sleep(0)
+        await asyncio.sleep(0)
     return True
 
 
-def async_print_matches(iterable, async_predicate):
+async def print_matches(iterable, async_predicate):
     for item in iterable:
-        matches = yield from async_predicate(item)
+        matches = await async_predicate(item)
         if matches:
             print(f'Found : {item}')
 
 
-def async_repetitive_message(message, interval_seconds):
+async def repetitive_message(message, interval_seconds):
     while True:
         print(message)
-        yield from async_sleep(interval_seconds)
+        await asyncio.sleep(interval_seconds)
+
+
+async def search(iterable, async_predicate):
+    for item in iterable:
+        if (await async_predicate(item)):
+            return item
+    raise ValueError('Not Found')
 
 
 def lucas():
@@ -50,10 +48,3 @@ def fib():
     while True:
         yield a
         a, b = b, a + b
-
-
-def async_search(iterable, async_predicate):
-    for item in iterable:
-        if (yield from async_predicate(item)):
-            return item
-    raise ValueError('Not Found')

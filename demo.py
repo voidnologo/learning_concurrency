@@ -1,10 +1,10 @@
-from prime import async_is_prime, async_print_matches, async_repetitive_message, fib, async_search, lucas
-from concurrency import Scheduler
+import asyncio
+from prime import is_prime, print_matches, repetitive_message, fib, search, lucas
 
 
-s = Scheduler()
-a = async_print_matches(lucas(), async_is_prime)
-b = async_repetitive_message('This is a rep message', 1)
-s.add(a)
-s.add(b)
-s.run_to_completion()
+scheduler = asyncio.get_event_loop()
+a = print_matches(lucas(), is_prime)
+b = repetitive_message('This is a rep message', 1)
+scheduler.create_task(a)
+scheduler.create_task(b)
+scheduler.run_forever()
